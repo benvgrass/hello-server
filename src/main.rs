@@ -15,6 +15,8 @@ fn handle_connection(mut stream: TcpStream) {
         .lines().map(|r| r.unwrap())
         .take_while(|l| !l.is_empty()).collect();
 
-    println!("Request: {:#?}", request);
+    let response_status = "HTTP/1.1 200 OK";
+    // write response header status\r\nContent-Length: len\r\n\r\nContent
+    // write response
 
 }
