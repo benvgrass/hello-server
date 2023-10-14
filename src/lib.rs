@@ -16,7 +16,7 @@ impl ThreadPool {
         let receiver = Arc::new(Mutex::new(receiver));
         let mut workers = Vec::with_capacity(size);
         for id in 0..size {
-            workers.push(WorkerThread::new(id, receiver.clone()));
+            workers.push(WorkerThread::new(id, Arc::clone(&receiver)));
         }
 
         Self { workers, sender: Some(sender) }
@@ -59,7 +59,7 @@ impl WorkerThread {
                     job();
                 }
                 Err(_) => {
-                    println!("thread {id} shutting down");
+                    println!("thread {id} disconnected");
                     break;
                 }
             }

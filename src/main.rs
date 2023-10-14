@@ -3,11 +3,13 @@ use hello_server::ThreadPool;
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
     let thread_pool = ThreadPool::new(4); // setting thread pool size as 4 initially
-    for stream in listener.incoming() {
+    for stream in listener.incoming().take(2) {
+        let stream = stream.unwrap();
         thread_pool.execute(|| {
-            handle_connection(stream.unwrap());
+            handle_connection(stream);
         });
     }
+    println!("shutting down");
 }
 
 fn handle_connection(mut stream: TcpStream) {
